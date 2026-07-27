@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;700&display=swap");
+
+@import "tailwindcss";
+
+.font-display { font-family: 'JetBrains Mono', monospace; }
+.font-body { font-family: 'Inter', sans-serif; }
+
+@keyframes scanline {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+@keyframes segFill {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.scan-sweep::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,176,32,0.35), transparent);
+  animation: scanline 1.4s linear infinite;
+}
+.blink-dot { animation: blink 1.4s ease-in-out infinite; }
+.fade-up { animation: floatUp 0.5s ease-out both; }
+
+.crt-overlay {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,0.025) 0px,
+    rgba(255,255,255,0.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.progress-stripes {
+  background-image: repeating-linear-gradient(90deg, #FFB020 0, #FFB020 8px, transparent 8px, transparent 12px);
+  background-size: 200% 100%;
+  animation: segFill 1s linear infinite;
+}
