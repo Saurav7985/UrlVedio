@@ -37,8 +37,8 @@ function ResultPanel({ status, videoInfo, onDownload }) {
     <div className="fade-up mt-5 rounded-2xl border border-white/10 bg-[#121826] p-4 md:p-6 flex flex-col gap-6">
       
       {/* Video Info Header */}
-      <div className="flex gap-4">
-        <div className="relative shrink-0 w-32 sm:w-48 aspect-video rounded-lg bg-[#0D121D] border border-white/10 flex items-center justify-center overflow-hidden group">
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="relative shrink-0 w-full sm:w-48 aspect-video rounded-lg bg-[#0D121D] border border-white/10 flex items-center justify-center overflow-hidden group">
           {videoInfo?.thumbnail ? (
             <img src={videoInfo.thumbnail} alt="thumbnail" className="h-full w-full object-cover" />
           ) : (
@@ -46,15 +46,15 @@ function ResultPanel({ status, videoInfo, onDownload }) {
           )}
         </div>
 
-        <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <p className="font-body text-lg font-bold text-[#ECEDF1] line-clamp-2 mb-1">
+        <div className="flex-1 min-w-0 flex flex-col justify-center sm:justify-start">
+          <p className="font-body text-lg font-bold text-[#ECEDF1] line-clamp-2 mb-1 text-center sm:text-left">
             {videoInfo?.title || "Untitled_Signal_Feed"}
           </p>
-          <p className="font-body text-sm text-[#8A93A6]">
+          <p className="font-body text-sm text-[#8A93A6] text-center sm:text-left">
             {videoInfo?.author ? `${videoInfo.author}` : "Unknown Creator"}
           </p>
           {videoInfo?.views && (
-            <p className="font-body text-xs text-[#5B6478] mt-1">
+            <p className="font-body text-xs text-[#5B6478] mt-1 text-center sm:text-left">
               {Number(videoInfo.views).toLocaleString()} views
             </p>
           )}
@@ -66,18 +66,18 @@ function ResultPanel({ status, videoInfo, onDownload }) {
       {/* Download Options */}
       {status !== "idle" && status !== "scanning" && (videoInfo?.availableVideoQuality || videoInfo?.availableAudioQuality) && (
         <div className="space-y-6">
-          <p className="text-sm font-display font-bold tracking-widest text-[#ECEDF1] uppercase">
+          <p className="text-sm font-display font-bold tracking-widest text-[#ECEDF1] uppercase text-center sm:text-left">
             Download Options
           </p>
 
           <div>
-            <p className="text-xs font-display tracking-widest text-[#5B6478] mb-2 uppercase">Type</p>
-            <div className="flex gap-2">
+            <p className="text-xs font-display tracking-widest text-[#5B6478] mb-2 uppercase text-center sm:text-left">Type</p>
+            <div className="flex flex-col sm:flex-row gap-2">
               <button
                 onClick={() => setDownloadType("video")}
-                className={`flex items-center gap-2 font-display text-xs px-4 py-2 rounded-md border transition-all duration-200 ${
+                className={`flex-1 sm:flex-none flex items-center justify-center sm:justify-start gap-2 font-display text-xs px-4 py-3 sm:py-2 rounded-md border transition-all duration-200 ${
                   downloadType === "video"
-                    ? "bg-amber-400 text-black border-amber-400 font-bold scale-105"
+                    ? "bg-amber-400 text-black border-amber-400 font-bold scale-[1.02] sm:scale-105"
                     : "border-white/10 text-white/70 hover:bg-white/5 hover:border-white/30"
                 }`}
               >
@@ -85,9 +85,9 @@ function ResultPanel({ status, videoInfo, onDownload }) {
               </button>
               <button
                 onClick={() => setDownloadType("audio")}
-                className={`flex items-center gap-2 font-display text-xs px-4 py-2 rounded-md border transition-all duration-200 ${
+                className={`flex-1 sm:flex-none flex items-center justify-center sm:justify-start gap-2 font-display text-xs px-4 py-3 sm:py-2 rounded-md border transition-all duration-200 ${
                   downloadType === "audio"
-                    ? "bg-amber-400 text-black border-amber-400 font-bold scale-105"
+                    ? "bg-amber-400 text-black border-amber-400 font-bold scale-[1.02] sm:scale-105"
                     : "border-white/10 text-white/70 hover:bg-white/5 hover:border-white/30"
                 }`}
               >
@@ -98,10 +98,10 @@ function ResultPanel({ status, videoInfo, onDownload }) {
 
           {/* Quality Selector */}
           <div>
-            <p className="text-xs font-display tracking-widest text-[#5B6478] mb-2 uppercase">
+            <p className="text-xs font-display tracking-widest text-[#5B6478] mb-2 uppercase text-center sm:text-left">
               {downloadType === "video" ? "Video Quality" : "Audio Quality"}
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap justify-center sm:justify-start gap-2">
               {downloadType === "video" && videoInfo.availableVideoQuality && [...videoInfo.availableVideoQuality].sort((a,b)=>b-a).map((quality) => (
                 <QualityOption
                   key={`video-${quality}`}
@@ -127,10 +127,10 @@ function ResultPanel({ status, videoInfo, onDownload }) {
              <button
                onClick={handleDownloadClick}
                disabled={isDownloadDisabled}
-               className="w-full flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-300 text-black font-display font-bold text-sm px-6 py-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+               className="w-full flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-300 text-black font-display font-bold text-sm sm:text-base px-6 py-4 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation active:scale-[0.98]"
              >
-               <FiDownload className="h-4 w-4" />
-               DOWNLOAD {currentQuality}{downloadType === "video" ? "p VIDEO" : " KBPS AUDIO"}
+               <FiDownload className="h-5 w-5" />
+               DOWNLOAD {currentQuality}{downloadType === "video" ? "p" : " KBPS"}
              </button>
           )}
 
