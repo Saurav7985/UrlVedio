@@ -1,10 +1,14 @@
-function QualityOption({ label, onSelect }) {
+function QualityOption({ label, isSelected, onSelect }) {
   return (
     <button
       onClick={onSelect}
-      className="font-display text-[11px] px-3 py-1.5 rounded-md border border-teal-400/30 text-teal-300 hover:bg-teal-400/10 hover:border-teal-400/60 transition-all duration-200 hover:-translate-y-0.5"
+      className={`font-display text-xs px-4 py-2 rounded-md border transition-all duration-200 flex items-center justify-center gap-1 ${
+        isSelected
+          ? "bg-amber-400 text-black border-amber-400 font-bold scale-105"
+          : "border-white/10 text-white/70 hover:bg-white/5 hover:border-white/30"
+      }`}
     >
-      {label}
+      {label} {isSelected && <span className="text-[10px]">✓</span>}
     </button>
   )
 }

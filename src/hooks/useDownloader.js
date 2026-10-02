@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import axiosInstance from "../api/axiosInstance";
+import { addToDownloadHistory } from "../utils/history";
 
 const YT_REGEX = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|shorts\/)|youtu\.be\/).+/i;
 
@@ -39,14 +40,15 @@ export function useDownloader() {
   };
 
   // Step 2: actual file download — browser ke default Downloads folder mein save hoga
-  const handleDownload = async (type, quality) => {
+  const handleDownload = async (type, quality, overrideUrl = null) => {
     setStatus("downloading");
     try {
+      const targetUrl = overrideUrl || url;
       const endpoint = type === "audio" ? "/download/audio" : "/download/video";
 
       const response = await axiosInstance.post(
         endpoint,
-        { url, quality },
+        { url: targetUrl, quality },
         { responseType: "blob" } // binary file receive karne ke liye
       );
 
@@ -68,6 +70,16 @@ export function useDownloader() {
 
       setStatus("done");
       toast.success("Downloaded successfully!");
+
+      addToDownloadHistory({
+        url: targetUrl,
+        title: videoInfo?.title || "Unknown Title",
+        thumbnail: videoInfo?.thumbnail || "",
+        type,
+        quality,
+        filename
+      });
+      window.dispatchEvent(new Event("history-updated"));
     } catch (err) {
       toast.error("Download failed");
       setStatus("ready");
